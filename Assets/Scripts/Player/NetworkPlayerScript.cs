@@ -16,11 +16,14 @@ public class NetworkPlayerScript : NetworkBehaviour
     private CharacterController controller;
     private float pitch = 0f;
 
+    private Animator animator;
+
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
         lobbyCanvas = GameObject.FindGameObjectWithTag("LobbyCanvas");
+        animator = GetComponentInChildren<Animator>();
     }
 
     void Update()
@@ -31,6 +34,9 @@ public class NetworkPlayerScript : NetworkBehaviour
         Vector3 movement = new Vector3(input.x, 0, input.y).normalized;
         movement = transform.TransformDirection(movement);
         controller.Move(movement * speed * Time.deltaTime);
+
+        animator.SetFloat("MoveX", input.x);
+        animator.SetFloat("MoveY", input.y);
 
         HandleCameraLook();
     }
